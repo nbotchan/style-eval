@@ -1,13 +1,18 @@
 # Style Eval
 
-An open-source toolkit for measuring how well language models write in a given style.
+An open-source toolkit for measuring how well large language models (LLMs) can emulate 
+people's unique, individual styles of writing, called an *idiolect*. Just like a 
+dialect is shared by a group of people, usually based on geographic region, culture, 
+or social class, an idiolect belongs to a single person. 
 
-The headline idea is **Style Match**, a 0 to 100 score for how far a model's writing
-moves from its default voice toward the real thing. Position is measured with
-Burrows' Delta and Cosine Delta, standard authorship-attribution methods.
+Idiolects are linguistic fingerprints—no two people share the exact same vocabulary, 
+grammar, catchphrases, and quirks of language. They constantly evolve as people age, 
+learn new words and phrases, and experience formative events in life. 
 
-This first milestone is the **trust check**: before any model is scored, the ruler has
-to work. Can Delta tell ten authors apart on books it has never seen?
+The key metric in Style Eval is **Style Match**, a 0 to 100 score for how far a model's
+writing moves from its default voice toward a specific idiolect. Under the hood, this
+is measured with Burrows' Delta and Cosine Delta, standard authorship-attribution 
+methods.
 
 ## Set up
 
