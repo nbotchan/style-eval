@@ -72,7 +72,7 @@ The report says what to check.
 ## Getting the books
 
 Gutenberg's website is for human visitors and blocks automated scraping, so `fetch` reads
-from a Gutenberg mirror (default `aleph.gutenberg.org`) at one file every 2 seconds. For a
+from a Gutenberg mirror (default `aleph.pglaf.org`) at one file every 2 seconds. For a
 local copy, `style-eval fetch --print-rsync` prints rsync commands for exactly the listed
 books; point `--local-mirror mirror` at the result. See Gutenberg's
 [mirroring guide](https://www.gutenberg.org/help/mirroring.html) and
