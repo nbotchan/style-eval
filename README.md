@@ -9,16 +9,39 @@ Burrows' Delta and Cosine Delta, standard authorship-attribution methods.
 This first milestone is the **trust check**: before any model is scored, the ruler has
 to work. Can Delta tell ten authors apart on books it has never seen?
 
-## Run it
+## Set up
+
+Style Eval needs Python 3.9 or newer and runs from a project virtualenv, so it never
+touches your system or conda Python. Build it once with the setup script:
 
 ```bash
-pip install -e .
+scripts/setup_env.sh
+```
+
+The script finds a suitable Python, creates `.venv/`, and installs the package in editable
+mode with the test dependencies. Use `scripts/setup_env.sh --fresh` to rebuild from scratch,
+or `PYTHON=/path/to/python3.12 scripts/setup_env.sh` to choose the interpreter.
+
+Then activate the environment in each new shell:
+
+```bash
+source .venv/bin/activate
+```
+
+Running a bare `pip install -e .` can pick up the wrong `pip` (an old conda or system one)
+and fail with `setup.py not found`. Activate `.venv` first, or use the script.
+
+## Run it
+
+With `.venv` activated and from the project folder:
+
+```bash
 style-eval fetch          # downloads about 100 books from a Project Gutenberg mirror
 style-eval trustcheck     # writes results/trustcheck.md and results/trustcheck.json
 ```
 
-Run both from the project folder. Pass `--strict` to `trustcheck` to exit non-zero if
-the gate fails. Tests, which need no network: `PYTHONPATH=src python3 -m unittest discover -s tests`.
+Pass `--strict` to `trustcheck` to exit non-zero if the gate fails. Tests, which need no
+network: `python -m pytest`.
 
 ## What the trust check does
 
