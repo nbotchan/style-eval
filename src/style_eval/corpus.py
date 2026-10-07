@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import random
+import re
 import time
 import urllib.error
 import urllib.request
@@ -59,21 +60,44 @@ def _decode(data: bytes) -> str:
         return data.decode("latin-1")
 
 
-def verify_header(header: str, author_key: str, expect_title: str) -> Optional[str]:
-    """Return None if the header matches what the manifest expects, else a reason."""
-    author = (header_field(header, "Author") or "").lower()
-    title = (header_field(header, "Title") or "").lower()
-    if author_key.lower() not in author:
-        return "author is %r, expected %r" % (author, author_key)
-    if expect_title.lower() not in title:
-        return "title is %r, expected it to contain %r" % (title, expect_title)
+_FRONT_MATTER_CHARS = 5000
+
+
+def _squash(text: str) -> str:
+    """Lowercase and collapse punctuation and line breaks, so a title split across lines matches."""
+    return " ".join(re.sub(r"[^a-z0-9]+", " ", text.lower()).split())
+
+
+def verify_header(header: str, author_key: str, expect_title: str, body: str = "") -> Optional[str]:
+    """Return None if the book matches what the manifest expects, else a reason.
+
+    Older Gutenberg files carry Title/Author lines in the header. Newer ones start at
+    the START marker with no such lines, so when a field is missing it is looked for in
+    the first few thousand characters of the book (title page) instead.
+    """
+    author = header_field(header, "Author")
+    title = header_field(header, "Title")
+    front = _squash(body[:_FRONT_MATTER_CHARS])
+    if author is not None:
+        if author_key.lower() not in author.lower():
+            return "author is %r, expected %r" % (author.lower(), author_key)
+    elif _squash(author_key) not in front:
+        return "no Author line, and %r not found on the title page" % author_key
+    if title is not None:
+        if expect_title.lower() not in title.lower():
+            return "title is %r, expected it to contain %r" % (title.lower(), expect_title)
+    elif _squash(expect_title) not in front:
+        return "no Title line, and %r not found on the title page" % expect_title
     return None
 
 
-def all_works(manifest: dict):
-    """Yield (author_key, work_dict) for every book in the manifest."""
+def all_works(manifest: dict, sample: bool = False):
+    """Yield (author_key, work_dict) for every book in the manifest.
+
+    With `sample`, yield only the first book listed for each author.
+    """
     for author, info in manifest["authors"].items():
-        for work in info["works"]:
+        for work in info["works"][:1] if sample else info["works"]:
             yield author, work
 
 
@@ -83,6 +107,7 @@ def fetch_corpus(
     mirror: str = DEFAULT_MIRROR,
     local_mirror: Optional[str] = None,
     delay: float = 2.0,
+    sample: bool = False,
     log=print,
 ) -> Dict[str, List[str]]:
     """Download every book in the manifest that is not already on disk.
@@ -90,9 +115,10 @@ def fetch_corpus(
     `local_mirror` points at a folder laid out like Gutenberg's (for example one
     made with rsync) and is read instead of the network. Returns a summary with
     lists of 'ok', 'cached', 'failed' (cannot download) and 'rejected' (wrong book).
+    `sample` fetches just the first book for each author.
     """
     summary: Dict[str, List[str]] = {"ok": [], "cached": [], "failed": [], "rejected": []}
-    for author, work in all_works(manifest):
+    for author, work in all_works(manifest, sample):
         wid = work["id"]
         label = "%s #%d (%s)" % (author, wid, work["expect"])
         target = raw_path(data_dir, wid)
@@ -124,12 +150,12 @@ def fetch_corpus(
             log("FAILED   %s" % label)
             continue
         try:
-            header, _ = split_gutenberg(text)
+            header, body = split_gutenberg(text)
         except ValueError as err:
             summary["rejected"].append("%s: %s" % (label, err))
             log("REJECTED %s: %s" % (label, err))
             continue
-        problem = verify_header(header, author, work["expect"])
+        problem = verify_header(header, author, work["expect"], body)
         if problem:
             summary["rejected"].append("%s: %s" % (label, problem))
             log("REJECTED %s: %s" % (label, problem))

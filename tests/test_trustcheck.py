@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from synthetic import make_corpus  # noqa: E402
 
-from style_eval.corpus import build_chunks, fetch_corpus, mirror_dir, verify_header  # noqa: E402
+from style_eval.corpus import all_works, build_chunks, fetch_corpus, mirror_dir, verify_header  # noqa: E402
 from style_eval.text import split_gutenberg  # noqa: E402
 from style_eval.trustcheck import render_report, run_trust_check  # noqa: E402
 
@@ -77,6 +77,21 @@ class FetchTests(unittest.TestCase):
         self.assertIsNone(verify_header(header, "Austen", "pride and prejudice"))
         self.assertIn("author", verify_header(header, "Dickens", "pride"))
         self.assertIn("title", verify_header(header, "Austen", "emma"))
+
+    def test_headerless_book_is_verified_from_title_page(self):
+        body = "\n\n  PRIDE.\n   and\n  PREJUDICE\n\n   by\n  Jane Austen,\n\n Chapter 1 ..."
+        self.assertIsNone(verify_header("", "Austen", "pride and prejudice", body))
+        self.assertIn("Author", verify_header("", "Dickens", "pride and prejudice", body))
+        self.assertIn("Title", verify_header("", "Austen", "emma", body))
+
+    def test_sample_takes_first_book_per_author(self):
+        with tempfile.TemporaryDirectory() as src:
+            manifest = make_corpus(src, n_authors=3, books=2)
+            self.assertEqual(len(list(all_works(manifest))), 6)
+            sampled = list(all_works(manifest, sample=True))
+            self.assertEqual(len(sampled), 3)
+            for author, work in sampled:
+                self.assertEqual(work, manifest["authors"][author]["works"][0])
 
     def test_fetch_from_local_mirror_accepts_right_book_and_rejects_wrong_one(self):
         with tempfile.TemporaryDirectory() as src, tempfile.TemporaryDirectory() as data:

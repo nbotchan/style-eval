@@ -26,12 +26,13 @@ def cmd_fetch(args) -> int:
     manifest = load_manifest(args.manifest)
     if args.print_rsync:
         # Folder layout is the same on every Gutenberg mirror.
-        for _, work in all_works(manifest):
+        for _, work in all_works(manifest, args.sample):
             rel = mirror_dir("", work["id"]).lstrip("/")
             print("rsync -av rsync.ibiblio.org::gutenberg/%s/ mirror/%s/" % (rel, rel))
         return 0
     summary = fetch_corpus(
-        manifest, args.data_dir, mirror=args.mirror, local_mirror=args.local_mirror, delay=args.delay
+        manifest, args.data_dir, mirror=args.mirror, local_mirror=args.local_mirror,
+        delay=args.delay, sample=args.sample,
     )
     print(
         "\n%d downloaded, %d already on disk, %d failed, %d rejected."
@@ -92,6 +93,7 @@ def main(argv=None) -> int:
     p.add_argument("--mirror", default=DEFAULT_MIRROR)
     p.add_argument("--local-mirror", help="read from a local rsync copy instead of the network")
     p.add_argument("--delay", type=float, default=2.0, help="seconds between downloads")
+    p.add_argument("--sample", action="store_true", help="fetch only the first book for each author")
     p.add_argument("--print-rsync", action="store_true", help="print rsync commands and exit")
     p.set_defaults(func=cmd_fetch)
 

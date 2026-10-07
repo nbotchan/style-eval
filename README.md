@@ -40,6 +40,10 @@ style-eval fetch          # downloads about 100 books from a Project Gutenberg m
 style-eval trustcheck     # writes results/trustcheck.md and results/trustcheck.json
 ```
 
+For a quick look, `style-eval fetch --sample` downloads just the first book for each author
+(10 books instead of about 100). That is enough to try the tools, but too little for a
+meaningful trust check, which needs held-out books.
+
 Pass `--strict` to `trustcheck` to exit non-zero if the gate fails. Tests, which need no
 network: `python -m pytest`.
 

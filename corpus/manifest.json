@@ -138,7 +138,7 @@
     "Wharton": {
       "name": "Edith Wharton",
       "works": [
-        {"id": 8958, "expect": "age of innocence"},
+        {"id": 541, "expect": "age of innocence"},
         {"id": 4327, "expect": "valley of decision"},
         {"id": 7517, "expect": "sanctuary"},
         {"id": 4514, "expect": "men and ghosts"},
