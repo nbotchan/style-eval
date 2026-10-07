@@ -1,4 +1,4 @@
-# StylEval
+# Style Eval
 
 An open-source toolkit for measuring how well language models write in a given style.
 
@@ -13,8 +13,8 @@ to work. Can Delta tell ten authors apart on books it has never seen?
 
 ```bash
 pip install -e .
-styleval fetch          # downloads about 100 books from a Project Gutenberg mirror
-styleval trustcheck     # writes results/trustcheck.md and results/trustcheck.json
+style-eval fetch          # downloads about 100 books from a Project Gutenberg mirror
+style-eval trustcheck     # writes results/trustcheck.md and results/trustcheck.json
 ```
 
 Run both from the project folder. Pass `--strict` to `trustcheck` to exit non-zero if
@@ -50,16 +50,16 @@ The report says what to check.
 
 Gutenberg's website is for human visitors and blocks automated scraping, so `fetch` reads
 from a Gutenberg mirror (default `aleph.gutenberg.org`) at one file every 2 seconds. For a
-local copy, `styleval fetch --print-rsync` prints rsync commands for exactly the listed
+local copy, `style-eval fetch --print-rsync` prints rsync commands for exactly the listed
 books; point `--local-mirror mirror` at the result. See Gutenberg's
 [mirroring guide](https://www.gutenberg.org/help/mirroring.html) and
 [robot access policy](https://www.gutenberg.org/policy/robot_access.html).
 
-`styleval catalog pg_catalog.csv Thackeray` lists an author's English texts from Gutenberg's
+`style-eval catalog pg_catalog.csv Thackeray` lists an author's English texts from Gutenberg's
 [offline catalog](https://www.gutenberg.org/ebooks/offline_catalogs.html), for fixing or
 extending the book list in `corpus/manifest.json`.
 
-`styleval peek 1342` shows the start and end of a cleaned book, to spot an editor's preface
+`style-eval peek 1342` shows the start and end of a cleaned book, to spot an editor's preface
 that cleaning missed. Trim it with `start_at` / `end_at` in the manifest.
 
 ## Known weak spots
@@ -77,9 +77,9 @@ MIT. See `LICENSE`. The Gutenberg books are downloaded, not included, and are pu
 
 ```
 corpus/manifest.json     books per author, folds, gate
-src/styleval/text.py     cleaning, tokenizing, chunking
-src/styleval/delta.py    Burrows and Cosine Delta
-src/styleval/corpus.py   fetching, verification, chunk building
-src/styleval/trustcheck.py  the held-out-books check and its report
+src/style_eval/text.py     cleaning, tokenizing, chunking
+src/style_eval/delta.py    Burrows and Cosine Delta
+src/style_eval/corpus.py   fetching, verification, chunk building
+src/style_eval/trustcheck.py  the held-out-books check and its report
 tests/                   unit tests, including synthetic-author known-answer tests
 ```

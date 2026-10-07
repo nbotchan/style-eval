@@ -8,9 +8,9 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from synthetic import make_corpus  # noqa: E402
 
-from styleval.corpus import build_chunks, fetch_corpus, mirror_dir, verify_header  # noqa: E402
-from styleval.text import split_gutenberg  # noqa: E402
-from styleval.trustcheck import render_report, run_trust_check  # noqa: E402
+from style_eval.corpus import build_chunks, fetch_corpus, mirror_dir, verify_header  # noqa: E402
+from style_eval.text import split_gutenberg  # noqa: E402
+from style_eval.trustcheck import render_report, run_trust_check  # noqa: E402
 
 SWEEP = (20, 40, 60, 80, 100)
 

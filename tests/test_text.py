@@ -1,6 +1,6 @@
 import unittest
 
-from styleval.text import (
+from style_eval.text import (
     apply_window,
     chunk_tokens,
     clean_body,

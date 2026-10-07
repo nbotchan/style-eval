@@ -2,7 +2,7 @@
   "chunk_size": 2000,
   "min_chunk": 1000,
   "folds": 3,
-  "seed": "styleval-v0",
+  "seed": "style-eval-v0",
   "cull": 0.5,
   "gate": 0.90,
   "pairs": [["Dickens", "Thackeray"], ["James", "Wharton"]],

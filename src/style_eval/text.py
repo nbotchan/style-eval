@@ -98,7 +98,7 @@ def clean_body(body: str) -> str:
 
     Drops illustration and footnote brackets, transcriber credits, chapter
     headings, bare numerals, ALL-CAPS title lines and 'Contents'. This is a
-    heuristic: use `styleval peek <id>` to spot anything it misses (for example
+    heuristic: use `style-eval peek <id>` to spot anything it misses (for example
     an editor's preface) and trim it with `start_at` / `end_at` in the manifest.
     """
     text = normalize_typography(body.replace("\r\n", "\n"))

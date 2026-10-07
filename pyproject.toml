@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "styleval"
+name = "style-eval"
 version = "0.0.1"
 description = "Open-source evaluation toolkit for measuring how language models write and converse."
 readme = "README.md"
@@ -12,7 +12,7 @@ license = {text = "MIT"}
 dependencies = ["numpy>=1.24"]
 
 [project.scripts]
-styleval = "styleval.cli:main"
+style-eval = "style_eval.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

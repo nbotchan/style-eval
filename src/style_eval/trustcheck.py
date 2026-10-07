@@ -56,7 +56,7 @@ def run_trust_check(manifest: dict, data_dir, sweep=SWEEP, n_boot: int = 500, se
     chunks, missing = build_chunks(manifest, data_dir)
     authors = sorted({c.author for c in chunks})
     if len(authors) < 2:
-        raise ValueError("need text from at least two authors; run `styleval fetch` first")
+        raise ValueError("need text from at least two authors; run `style-eval fetch` first")
     books: Dict[str, List[int]] = {a: sorted({c.work_id for c in chunks if c.author == a}) for a in authors}
     thin = [a for a, b in books.items() if len(b) < 2]
     if thin:
@@ -168,7 +168,7 @@ def render_report(r: dict) -> str:
     p = r["methods"][r["primary"]]
     verdict = "PASS" if r["passed"] else "FAIL"
     lines = [
-        "# StylEval trust check",
+        "# Style Eval trust check",
         "",
         "**%s.** Cosine Delta names the right author for %s of held-out text "
         "(95%% interval %s to %s; gate %s)."
@@ -259,8 +259,8 @@ def render_report(r: dict) -> str:
         lines += [
             "## If this failed",
             "",
-            "Check, in order: books that failed to download or were rejected (`styleval fetch`); "
-            "editor prefaces or other non-author text left in a book (`styleval peek <id>`, then "
+            "Check, in order: books that failed to download or were rejected (`style-eval fetch`); "
+            "editor prefaces or other non-author text left in a book (`style-eval peek <id>`, then "
             "set `start_at` / `end_at` in the manifest); authors with very little text.",
             "",
         ]

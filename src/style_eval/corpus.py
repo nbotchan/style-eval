@@ -25,7 +25,7 @@ from .text import (
     tokenize,
 )
 
-USER_AGENT = "styleval/0.0.1 (open-source stylometry research; polite, rate-limited)"
+USER_AGENT = "style-eval/0.0.1 (open-source stylometry research; polite, rate-limited)"
 DEFAULT_MIRROR = "https://aleph.gutenberg.org"
 SUFFIXES = ("-0.txt", ".txt", "-8.txt")  # UTF-8, ASCII, Latin-1 editions
 

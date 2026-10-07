@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from styleval.delta import DeltaModel, burrows_delta, cosine_delta
+from style_eval.delta import DeltaModel, burrows_delta, cosine_delta
 
 A = [["the", "the", "cat", "cat"], ["the", "the", "the", "cat"]]
 B = [["the", "dog", "dog", "dog"], ["the", "the", "dog", "dog"]]

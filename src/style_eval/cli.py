@@ -1,4 +1,4 @@
-"""Command line: styleval fetch | peek | catalog | trustcheck."""
+"""Command line: style-eval fetch | peek | catalog | trustcheck."""
 
 from __future__ import annotations
 
@@ -83,7 +83,7 @@ def cmd_trustcheck(args) -> int:
 
 
 def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(prog="styleval", description=__doc__)
+    parser = argparse.ArgumentParser(prog="style-eval", description=__doc__)
     parser.add_argument("--manifest", default=DEFAULT_MANIFEST)
     parser.add_argument("--data-dir", default="data")
     sub = parser.add_subparsers(dest="command", required=True)
