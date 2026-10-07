@@ -1,0 +1,155 @@
+{
+  "chunk_size": 2000,
+  "min_chunk": 1000,
+  "folds": 3,
+  "seed": "styleval-v0",
+  "cull": 0.5,
+  "gate": 0.90,
+  "pairs": [["Dickens", "Thackeray"], ["James", "Wharton"]],
+  "authors": {
+    "Austen": {
+      "name": "Jane Austen",
+      "works": [
+        {"id": 1342, "expect": "pride and prejudice"},
+        {"id": 158, "expect": "emma"},
+        {"id": 141, "expect": "mansfield park"},
+        {"id": 161, "expect": "sense and sensibility"},
+        {"id": 105, "expect": "persuasion"},
+        {"id": 121, "expect": "northanger abbey"}
+      ]
+    },
+    "Dickens": {
+      "name": "Charles Dickens",
+      "works": [
+        {"id": 98, "expect": "tale of two cities"},
+        {"id": 1400, "expect": "great expectations"},
+        {"id": 730, "expect": "oliver twist"},
+        {"id": 1023, "expect": "bleak house"},
+        {"id": 766, "expect": "david copperfield"},
+        {"id": 786, "expect": "hard times"},
+        {"id": 580, "expect": "pickwick"},
+        {"id": 967, "expect": "nicholas nickleby"},
+        {"id": 883, "expect": "our mutual friend"},
+        {"id": 700, "expect": "old curiosity shop"},
+        {"id": 821, "expect": "dombey"},
+        {"id": 963, "expect": "little dorrit"},
+        {"id": 9699, "expect": "chuzzlewit"},
+        {"id": 564, "expect": "edwin drood"}
+      ]
+    },
+    "Thackeray": {
+      "name": "William Makepeace Thackeray",
+      "works": [
+        {"id": 599, "expect": "vanity fair"},
+        {"id": 7265, "expect": "pendennis"},
+        {"id": 2511, "expect": "esmond"},
+        {"id": 2608, "expect": "roundabout"},
+        {"id": 2675, "expect": "burlesques"},
+        {"id": 9523, "expect": "christmas books"},
+        {"id": 9524, "expect": "cairo"}
+      ]
+    },
+    "Twain": {
+      "name": "Mark Twain",
+      "works": [
+        {"id": 76, "expect": "huckleberry finn"},
+        {"id": 74, "expect": "tom sawyer"},
+        {"id": 86, "expect": "connecticut yankee"},
+        {"id": 3176, "expect": "innocents abroad"},
+        {"id": 3177, "expect": "roughing it"},
+        {"id": 1837, "expect": "prince and the pauper"},
+        {"id": 245, "expect": "life on the mississippi"},
+        {"id": 119, "expect": "tramp abroad"},
+        {"id": 102, "expect": "wilson"}
+      ]
+    },
+    "Poe": {
+      "name": "Edgar Allan Poe",
+      "works": [
+        {"id": 2147, "expect": "works of edgar allan poe"},
+        {"id": 2148, "expect": "works of edgar allan poe"},
+        {"id": 2149, "expect": "works of edgar allan poe"},
+        {"id": 2150, "expect": "works of edgar allan poe"},
+        {"id": 2151, "expect": "works of edgar allan poe"}
+      ]
+    },
+    "Conrad": {
+      "name": "Joseph Conrad",
+      "works": [
+        {"id": 2305, "expect": "set of six"},
+        {"id": 1143, "expect": "notes on life"},
+        {"id": 9339, "expect": "personal record"},
+        {"id": 2480, "expect": "western eyes"},
+        {"id": 28843, "expect": "youth"},
+        {"id": 219, "expect": "heart of darkness"},
+        {"id": 5658, "expect": "lord jim"},
+        {"id": 974, "expect": "secret agent"},
+        {"id": 1142, "expect": "typhoon"},
+        {"id": 720, "expect": "almayer"}
+      ]
+    },
+    "Doyle": {
+      "name": "Arthur Conan Doyle",
+      "works": [
+        {"id": 1661, "expect": "adventures of sherlock holmes"},
+        {"id": 834, "expect": "memoirs of sherlock holmes"},
+        {"id": 221, "expect": "return of sherlock holmes"},
+        {"id": 903, "expect": "white company"},
+        {"id": 2097, "expect": "sign of the four"},
+        {"id": 244, "expect": "study in scarlet"},
+        {"id": 2852, "expect": "hound of the baskervilles"},
+        {"id": 139, "expect": "lost world"},
+        {"id": 3289, "expect": "valley of fear"},
+        {"id": 2350, "expect": "his last bow"}
+      ]
+    },
+    "Wells": {
+      "name": "H. G. Wells",
+      "works": [
+        {"id": 35, "expect": "time machine"},
+        {"id": 8976, "expect": "war of the worlds"},
+        {"id": 12750, "expect": "stolen bacillus"},
+        {"id": 11870, "expect": "country of the blind"},
+        {"id": 42989, "expect": "plattner story"},
+        {"id": 35461, "expect": "short history of the world"},
+        {"id": 59769, "expect": "bealby"},
+        {"id": 159, "expect": "doctor moreau"},
+        {"id": 5230, "expect": "invisible man"},
+        {"id": 718, "expect": "tono-bungay"},
+        {"id": 1013, "expect": "first men in the moon"}
+      ]
+    },
+    "James": {
+      "name": "Henry James",
+      "works": [
+        {"id": 209, "expect": "turn of the screw"},
+        {"id": 178, "expect": "confidence"},
+        {"id": 2327, "expect": "short stories"},
+        {"id": 37424, "expect": "views and reviews"},
+        {"id": 2833, "expect": "portrait of a lady"},
+        {"id": 432, "expect": "ambassadors"},
+        {"id": 29452, "expect": "wings of the dove"},
+        {"id": 4264, "expect": "golden bowl"},
+        {"id": 2870, "expect": "washington square"},
+        {"id": 208, "expect": "daisy miller"},
+        {"id": 177, "expect": "american"}
+      ]
+    },
+    "Wharton": {
+      "name": "Edith Wharton",
+      "works": [
+        {"id": 8958, "expect": "age of innocence"},
+        {"id": 4327, "expect": "valley of decision"},
+        {"id": 7517, "expect": "sanctuary"},
+        {"id": 4514, "expect": "men and ghosts"},
+        {"id": 4519, "expect": "descent of man"},
+        {"id": 9277, "expect": "crucial instances"},
+        {"id": 295, "expect": "early short fiction"},
+        {"id": 306, "expect": "early short fiction"},
+        {"id": 284, "expect": "house of mirth"},
+        {"id": 4517, "expect": "ethan frome"},
+        {"id": 166, "expect": "summer"}
+      ]
+    }
+  }
+}
