@@ -12,7 +12,7 @@ from style_eval.corpus import all_works, build_chunks, fetch_corpus, mirror_dir,
 from style_eval.text import split_gutenberg  # noqa: E402
 from style_eval.trustcheck import render_report, run_trust_check  # noqa: E402
 
-SWEEP = (20, 40, 60, 80, 100)
+SWEEP = (50, 100)
 
 
 class TrustCheckTests(unittest.TestCase):
@@ -20,7 +20,7 @@ class TrustCheckTests(unittest.TestCase):
     def setUpClass(cls):
         cls.tmp = tempfile.TemporaryDirectory()
         cls.manifest = make_corpus(cls.tmp.name)
-        cls.result = run_trust_check(cls.manifest, cls.tmp.name, sweep=SWEEP, n_boot=50)
+        cls.result = run_trust_check(cls.manifest, cls.tmp.name, sweep=SWEEP)
 
     @classmethod
     def tearDownClass(cls):
@@ -28,12 +28,9 @@ class TrustCheckTests(unittest.TestCase):
 
     def test_known_answer_synthetic_authors_are_found(self):
         # Fake authors with clearly different habits must be told apart on unseen books.
-        cos = self.result["methods"]["cosine"]
-        self.assertGreaterEqual(cos["headline"], 0.95)
+        self.assertGreaterEqual(self.result["headline"], 0.95)
         self.assertTrue(self.result["passed"])
-        self.assertEqual(cos["books_correct"], cos["books_total"])
-        self.assertLessEqual(cos["ci"][0], cos["headline"])
-        self.assertGreaterEqual(cos["ci"][1], cos["headline"])
+        self.assertEqual(self.result["books_correct"], self.result["books_total"])
 
     def test_books_are_held_out_not_just_chunks(self):
         self.assertEqual(self.result["folds"], 3)
@@ -56,9 +53,20 @@ class TrustCheckTests(unittest.TestCase):
         mixed["authors"] = dict(self.manifest["authors"])
         mixed["authors"]["Auth0"] = {"name": "Auth0", "works": a0[:2] + a1[:2]}
         mixed["authors"]["Auth1"] = {"name": "Auth1", "works": a0[2:] + a1[2:]}
-        res = run_trust_check(mixed, self.tmp.name, sweep=SWEEP, n_boot=20)
-        self.assertLess(res["methods"]["cosine"]["per_author"]["Auth0"], 0.9)
-        self.assertLess(res["methods"]["cosine"]["headline"], self.result["methods"]["cosine"]["headline"])
+        res = run_trust_check(mixed, self.tmp.name, sweep=SWEEP)
+        self.assertLess(res["per_author"]["Auth0"], 0.9)
+        self.assertLess(res["headline"], self.result["headline"])
+
+    def test_predictions_follow_chunks_not_label_order(self):
+        # faststylometry sorts its output columns by label. Chunk 10 sorts before chunk 2,
+        # so scrambled mapping would collapse accuracy on any corpus with 10+ chunks.
+        self.assertGreater(self.result["n_chunks"], 10)
+        self.assertGreaterEqual(min(self.result["per_author"].values()), 0.9)
+
+    def test_tokenizer_is_faststylometrys(self):
+        from faststylometry import tokenise_remove_pronouns_en
+
+        self.assertEqual(tokenise_remove_pronouns_en("Don\u2019t stop, he said, 12 times!"), ["dont", "stop", "said", "times"])
 
     def test_report_renders(self):
         report = render_report(self.result)

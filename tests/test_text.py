@@ -6,7 +6,6 @@ from style_eval.text import (
     clean_body,
     header_field,
     split_gutenberg,
-    tokenize,
 )
 
 RAW = """The Project Gutenberg eBook of Test
@@ -52,9 +51,6 @@ class TextTests(unittest.TestCase):
 
     def test_lowercase_words_that_look_like_numerals_are_kept(self):
         self.assertIn("did", clean_body("did\n\nI did.").split())
-
-    def test_tokenize_normalizes_apostrophes_and_dashes(self):
-        self.assertEqual(tokenize("Don’t stop—go now, 12 times!"), ["don't", "stop", "go", "now", "times"])
 
     def test_chunking_drops_short_tail(self):
         toks = ["x"] * 4500
