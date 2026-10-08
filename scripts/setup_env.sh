@@ -7,7 +7,7 @@
 set -euo pipefail
 
 MIN_MAJOR=3
-MIN_MINOR=9
+MIN_MINOR=11
 
 cd "$(dirname "$0")/.."
 
@@ -21,7 +21,7 @@ pick_python() {
     return
   fi
   local candidate path
-  for candidate in python3.14 python3.13 python3.12 python3.11 python3.10 python3.9 python3; do
+  for candidate in python3.14 python3.13 python3.12 python3.11 python3; do
     path=$(command -v "$candidate" || true)
     if [ -n "$path" ] && ok_python "$path"; then
       echo "$path"

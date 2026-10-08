@@ -17,13 +17,14 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+from faststylometry import tokenise_remove_pronouns_en
+
 from .text import (
     apply_window,
     chunk_tokens,
     clean_body,
     header_field,
     split_gutenberg,
-    tokenize,
 )
 
 USER_AGENT = "style-eval/0.0.1 (open-source stylometry research; polite, rate-limited)"
@@ -193,7 +194,7 @@ def build_chunks(manifest: dict, data_dir) -> Tuple[List[Chunk], List[str]]:
         if not path.exists():
             missing.append("%s #%d (%s)" % (author, work["id"], work["expect"]))
             continue
-        tokens = tokenize(clean_work(path.read_text(encoding="utf-8"), work))
+        tokens = tokenise_remove_pronouns_en(clean_work(path.read_text(encoding="utf-8"), work))
         for piece in chunk_tokens(tokens, size, min_size):
             chunks.append(Chunk(author, work["id"], work["expect"], piece))
     return chunks, missing

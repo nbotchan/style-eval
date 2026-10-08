@@ -1,8 +1,6 @@
-"""Text cleaning, tokenizing and chunking.
+"""Text cleaning and chunking. Deterministic, standard library only.
 
-Everything here is deterministic and uses only the standard library. The same
-tokenizer is used for reference books and (later) for model outputs, so the two
-are always measured the same way.
+Tokenizing and Delta come from faststylometry (see `corpus.py` and `trustcheck.py`).
 """
 
 from __future__ import annotations
@@ -133,15 +131,7 @@ def apply_window(text: str, start_at: Optional[str] = None, end_at: Optional[str
     return text
 
 
-# --- Tokens and chunks -------------------------------------------------------------
-
-_WORD_RE = re.compile(r"[^\W\d_]+(?:'[^\W\d_]+)*")
-
-
-def tokenize(text: str) -> List[str]:
-    """Lowercase word tokens. Keeps internal apostrophes ("don't"), splits on hyphens."""
-    return _WORD_RE.findall(normalize_typography(text).lower())
-
+# --- Chunks -------------------------------------------------------------
 
 def chunk_tokens(tokens: List[str], size: int = 2000, min_size: int = 1000) -> List[List[str]]:
     """Cut a token list into consecutive chunks of `size` words.

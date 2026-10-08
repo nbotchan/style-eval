@@ -7,9 +7,9 @@ name = "style-eval"
 version = "0.0.1"
 description = "Open-source evaluation toolkit for measuring how language models write and converse."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 license = {text = "MIT"}
-dependencies = ["numpy>=1.24"]
+dependencies = ["faststylometry>=1.0.5", "numpy>=2.3.1"]
 
 [project.optional-dependencies]
 dev = ["pytest"]

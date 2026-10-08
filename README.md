@@ -11,12 +11,12 @@ learn new words and phrases, and experience formative events in life.
 
 The key metric in Style Eval is **Style Match**, a 0 to 100 score for how far a model's
 writing moves from its default voice toward a specific idiolect. Under the hood, this
-is measured with Burrows' Delta and Cosine Delta, standard authorship-attribution 
-methods.
+is measured with Burrows' Delta, a standard authorship-attribution method, as implemented
+by [faststylometry](https://pypi.org/project/faststylometry/).
 
 ## Set up
 
-Style Eval needs Python 3.9 or newer and runs from a project virtualenv, so it never
+Style Eval needs Python 3.11 or newer and runs from a project virtualenv, so it never
 touches your system or conda Python. Build it once with the setup script:
 
 ```bash
@@ -59,24 +59,30 @@ network: `python -m pytest`.
 2. Splits the books, not the chunks, into three rounds. In each round it fits Delta on two
    thirds of each author's books and holds out the rest. Chunks from one book share
    characters and topic, so splitting by chunk would leak.
-3. Assigns every held-out chunk to the nearest of the ten authors.
-4. Reports the share assigned correctly, averaged over authors and over 100 to 1,000
-   frequent words, with a 95% interval that resamples whole books.
+3. Assigns every held-out chunk to the nearest of the ten authors, using faststylometry's
+   `calculate_burrows_delta`.
+4. Reports the share assigned correctly, averaged over authors and over 100, 300 and 500
+   frequent words.
 
-**Gate:** at least 90% (cosine). If it fails, the problem is the setup, not the models.
+**Gate:** at least 90%. If it fails, the problem is the setup, not the models.
 The report says what to check.
+
+**Current status: the gate fails.** On the full 92-book corpus, faststylometry's Burrows'
+Delta scores about 75% (71% to 77% across 100 to 500 words). Austen and Poe are near 93%;
+Dickens (59%) and James (65%) are weakest. Nothing has been tuned to reach the gate. Likely
+causes: faststylometry does not drop character names and topic words, removes pronouns, and
+offers only Burrows' Delta. Until this passes, do not trust Style Match scores.
 
 ## Design choices worth knowing
 
-- **Every author counts equally** in the word ranking, means and standard deviations, so
-  Dickens' 3 million words do not set the scale for everyone.
+- **Delta is faststylometry's.** Word ranking, z-scores, pronoun removal and tokenizing
+  are all its defaults. Style Eval only fetches, cleans and chunks the books and splits
+  them into rounds.
 - **Statistics come from reference text only.** Nothing from the text being scored leaks in.
-- **Words must appear in at least half of the chunks** to be used. This drops character
-  names and topic words.
 - **Wrong IDs are caught.** Every download is checked against the Title and Author lines
   in its own header. A mismatch is reported and the book is skipped.
-- **One tokenizer** (lowercase, curly quotes straightened, hyphens split) is used for books
-  and, later, for model outputs.
+- **One tokenizer** (faststylometry's, which drops pronouns) is used for books and, later,
+  for model outputs.
 
 ## Getting the books
 
@@ -99,6 +105,7 @@ that cleaning missed. Trim it with `start_at` / `end_at` in the manifest.
 - The book IDs in the manifest have not been checked against Gutenberg from here; the
   header check exists for that reason. Expect to fix a few.
 - Poe's Gutenberg volumes mix poetry, tales and criticism. Swap in Melville if it drags.
+- The trust check fails its gate with faststylometry's defaults (see above).
 - Cleaning is heuristic. Some tables of contents and verse will get through.
 
 ## License
@@ -109,8 +116,7 @@ MIT. See `LICENSE`. The Gutenberg books are downloaded, not included, and are pu
 
 ```
 corpus/manifest.json     books per author, folds, gate
-src/style_eval/text.py     cleaning, tokenizing, chunking
-src/style_eval/delta.py    Burrows and Cosine Delta
+src/style_eval/text.py     cleaning and chunking
 src/style_eval/corpus.py   fetching, verification, chunk building
 src/style_eval/trustcheck.py  the held-out-books check and its report
 tests/                   unit tests, including synthetic-author known-answer tests
