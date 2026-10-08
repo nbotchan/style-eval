@@ -67,6 +67,12 @@ network: `python -m pytest`.
 **Gate:** at least 90%. If it fails, the problem is the setup, not the models.
 The report says what to check.
 
+**Current status: the gate fails.** On the full 92-book corpus, faststylometry's Burrows'
+Delta scores about 75% (71% to 77% across 100 to 500 words). Austen and Poe are near 93%;
+Dickens (59%) and James (65%) are weakest. Nothing has been tuned to reach the gate. Likely
+causes: faststylometry does not drop character names and topic words, removes pronouns, and
+offers only Burrows' Delta. Until this passes, do not trust Style Match scores.
+
 ## Design choices worth knowing
 
 - **Delta is faststylometry's.** Word ranking, z-scores, pronoun removal and tokenizing
@@ -99,6 +105,7 @@ that cleaning missed. Trim it with `start_at` / `end_at` in the manifest.
 - The book IDs in the manifest have not been checked against Gutenberg from here; the
   header check exists for that reason. Expect to fix a few.
 - Poe's Gutenberg volumes mix poetry, tales and criticism. Swap in Melville if it drags.
+- The trust check fails its gate with faststylometry's defaults (see above).
 - Cleaning is heuristic. Some tables of contents and verse will get through.
 
 ## License
